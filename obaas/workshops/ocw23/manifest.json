@@ -52,7 +52,11 @@
             "filename": "../../extend-mobile-app/extend-mobile-app.md"
         },
         {
-            "title": "Lab 9: Clean Up",
+            "title": "Lab 9: Netflix Conductor Workflow example, integrated with Parse",
+            "filename": "../../workflow/workflow.md"
+        },
+        {
+            "title": "Lab 10: Clean Up",
             "filename": "../../cleanup/cleanup.md"
         },
         {
