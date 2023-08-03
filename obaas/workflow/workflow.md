@@ -36,15 +36,15 @@ This lab assumes you have:
 This is an high level description about the workflow that has been developed as demo that you can download [here]() and installed in the engine available in the Oracle Backend for Spring Boot:
 
 Start with: CloudCashPayment.afterSave() holding: {"amount": number, "fromAccount": "cdebari", "destination": "andy@test.com"}
-- TASK call\_customer\_service:
+- TASK **call\_customer\_service**:
       * Call API:  /api/v1/customer/customer/byemail/{email} 
       * IN: Start.destination
       * OUT: customerId 
-- TASK call\_account\_service:
+- TASK **call\_account\_service**:
       * Call API: /api/v1/account/getAccounts/{customerId}
       * IN: call\_customer\_service.customerId
-      * OUT: accountId (NOTE: just pick the first ‘checking’ one, if any, otherwise any account)
-- TASK call_transfer_service:
+      * OUT: accountId 
+- TASK **call\_transfer\_service**:
       * Call API: /transfer?fromAccount=x&toAccount=x&amount-x API
       * IN: 
          * fromAccount=Start.fromAccount
