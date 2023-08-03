@@ -33,9 +33,26 @@ This lab assumes you have:
 
 ## Task 1: Develop and deploy the Netflix Conductor workflow
 
-workflow description x Paulo.
+This is an high level description about the workflow that has been developed as demo that you can download [here]() and installed in the engine available in the Oracle Backend for Spring Boot:
 
-1. Clone the source code repository
+Start with: CloudCashPayment.afterSave() holding: {"amount": number, "fromAccount": "cdebari", "destination": "andy@test.com"}
+- TASK call\_customer\_service:
+      * Call API:  /api/v1/customer/customer/byemail/{email} 
+      * IN: Start.destination
+      * OUT: customerId 
+- TASK call\_account\_service:
+      * Call API: /api/v1/account/getAccounts/{customerId}
+      * IN: call\_customer\_service.customerId
+      * OUT: accountId (NOTE: just pick the first ‘checking’ one, if any, otherwise any account)
+- TASK call_transfer_service:
+      * Call API: /transfer?fromAccount=x&toAccount=x&amount-x API
+      * IN: 
+         * fromAccount=Start.fromAccount
+         * toAccount=call\_account\_service.accountId
+         * amount=Start.amount
+      * OUT: start the transfer saga, get EXIT_CODE
+- End with EXIT_CODE
+
 
    ...
 
@@ -47,6 +64,7 @@ workflow description x Paulo.
 
     ```shell
     $ <copy>cd microservices-datadriven/cloudbank-v2/flutter-app</copy>
+    
     ```
 ## Task 2: Link the Workflow to a new CloudCashPayment
 
