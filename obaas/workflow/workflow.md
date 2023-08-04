@@ -33,39 +33,38 @@ This lab assumes you have:
 
 ## Task 1: Develop and deploy the Netflix Conductor workflow
 
-This is an high level description about the workflow that has been developed as demo that you can download [here]() and installed in the engine available in the Oracle Backend for Spring Boot:
+This is an high level description about the workflow, **cbank\_workflow\_demo**, that has been developed as demo that you can download [here]() and installed in the engine available in the Oracle Backend for Spring Boot:
 
-Start with: CloudCashPayment.afterSave() holding: {"amount": number, "fromAccount": "cdebari", "destination": "andy@test.com"}
-- TASK **call\_customer\_service**:
-      * Call API:  /api/v1/customer/customer/byemail/{email} 
-      * IN: Start.destination
-      * OUT: customerId 
+Start with: CloudCashPayment.afterSave() holding: {"amount": number, "fromAccount": "cdebari", "destination": "andy@test.com"}, and executing the following tasks in sequence:
+
 - TASK **call\_account\_service**:
-      * Call API: /api/v1/account/getAccounts/{customerId}
-      * IN: call\_customer\_service.customerId
-      * OUT: accountId 
-- TASK **call\_transfer\_service**:
-      * Call API: /transfer?fromAccount=x&toAccount=x&amount-x API
+      * IN: workflow.input.object.fromAccount
+- TASK **call\_customer\_service**:
+      * IN: workflow.input.object.destination
+- TASK **call\_account\_service**:
+      * IN: toCustomerId
+- TASK **call\_transfer\_service**
       * IN: 
-         * fromAccount=Start.fromAccount
-         * toAccount=call\_account\_service.accountId
-         * amount=Start.amount
-      * OUT: start the transfer saga, get EXIT_CODE
-- End with EXIT_CODE
+         * fromAccountId
+         * toAccountId
+         * amount
+      * OUT:
+         * fromAccountId
+         * toAccountId
+         * amount
+         * transferMessage
+- End
 
+Note: the returns from REST calls are managed in intermediate steps that extract data for next input to tasks.
 
-   ...
+TBD: from where and how to deploy the Workflow
+...
 
-    ```shell
+```shell
     $ <copy>git clone https://github.com/oracle/microservices-datadriven.git</copy>
-    ```
+```
 
-   The source code for the CloudBank application will be in the `microservices-datadriven` directory you just created, in the `cloudbank-v2/flutter-app` subdirectory.
-
-    ```shell
-    $ <copy>cd microservices-datadriven/cloudbank-v2/flutter-app</copy>
-    
-    ```
+   
 ## Task 2: Link the Workflow to a new CloudCashPayment
 
 1. Access to the Parse Dashboard, as describe previously in **Lab. 1 - Task 2**:
